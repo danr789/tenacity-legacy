@@ -71,20 +71,6 @@ jobs:
             vcpkg_triplet: x64-linux
             CMAKE_GENERATOR: Ninja
 
-          - name: macOS - Big Sur 11 (Intel) - Ninja
-            id: macos-bigsur-1100-intel-x64_osx_1012min-ninja
-            os: macos-11
-            arch: Intel
-            vcpkg_triplet: x64-osx-10.12min
-            CMAKE_GENERATOR: Ninja
-
-          - name: macOS - Catalina 10.15 (Intel) - Ninja
-            id: macos-catalina-1015-intel-x64_osx_1012min-ninja
-            os: macos-10.15
-            arch: Intel
-            vcpkg_triplet: x64-osx-10.12min
-            CMAKE_GENERATOR: Ninja
-
           - name: Windows - Server 2019 (amd64) - Visual Studio 2019
             id: windows-server-2019-amd64-x64_windows-vs2019_x64
             os: windows-2019
@@ -225,15 +211,6 @@ jobs:
           libgtk-3-dev
           libsuil-dev
           gettext
-
-      - name: "[MacOS] Install dependencies"
-        if: runner.os == 'macOS'
-        run: >-
-          brew install
-          bash
-          ccache
-          ninja
-          nasm
 
       - name: "[Windows] Install dependencies"
         if: runner.os == 'Windows'
