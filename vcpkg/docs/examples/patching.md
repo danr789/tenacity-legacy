@@ -151,7 +151,7 @@ vcpkg_extract_source_archive_ex(
     "use-abort-on-all-platforms.patch"
 )
 
-vcpkg_cmake_configure(
+vcpkg_configure_cmake(
 ...
 ```
 

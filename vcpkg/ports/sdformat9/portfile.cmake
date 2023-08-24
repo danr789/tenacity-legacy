@@ -1,3 +1,5 @@
+vcpkg_fail_port_install(ON_TARGET "linux" "uwp")
+
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO osrf/sdformat
@@ -6,37 +8,36 @@ vcpkg_from_github(
     HEAD_REF sdf9
     PATCHES
         fix-dependency-urdfdom.patch
-        fix-quote.patch
-        no-absolute.patch
-        use-external-tinyxml-windows.patch
 )
 
 # Ruby is required by the sdformat build process
 vcpkg_find_acquire_program(RUBY)
 get_filename_component(RUBY_PATH ${RUBY} DIRECTORY)
 set(_path $ENV{PATH})
-vcpkg_add_to_path("${RUBY_PATH}")
+vcpkg_add_to_path(${RUBY_PATH})
 
-vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}"
+vcpkg_configure_cmake(
+    SOURCE_PATH ${SOURCE_PATH}
+    PREFER_NINJA
     OPTIONS 
         -DBUILD_TESTING=OFF
-        -DUSE_INTERNAL_URDF=OFF
+        -DUSE_EXTERNAL_URDF=ON
+        -DUSE_EXTERNAL_TINYXML=ON
 )
 
-vcpkg_cmake_install()
+vcpkg_install_cmake()
 
 # Restore original path
 set(ENV{PATH} ${_path})
 
 # Fix cmake targets and pkg-config file location
-vcpkg_cmake_config_fixup(CONFIG_PATH "lib/cmake/sdformat9")
+vcpkg_fixup_cmake_targets(CONFIG_PATH "lib/cmake/sdformat9")
 vcpkg_fixup_pkgconfig()
 
 # Remove debug files
-file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include"
-                    "${CURRENT_PACKAGES_DIR}/debug/lib/cmake"
-                    "${CURRENT_PACKAGES_DIR}/debug/share")
+file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include
+                    ${CURRENT_PACKAGES_DIR}/debug/lib/cmake
+                    ${CURRENT_PACKAGES_DIR}/debug/share)
 
 # Handle copyright
-file(INSTALL "${SOURCE_PATH}/LICENSE" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)
+file(INSTALL ${SOURCE_PATH}/LICENSE DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)

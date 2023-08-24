@@ -12,8 +12,9 @@ vcpkg_from_github(
         fix-cmake-location.patch
 )
 
-vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}"
+vcpkg_configure_cmake(
+    SOURCE_PATH ${SOURCE_PATH}
+    PREFER_NINJA
     OPTIONS
         -DGFLAGS_PREFER_EXPORTED_GFLAGS_CMAKE_CONFIGURATION=OFF
         -DGLOG_PREFER_EXPORTED_GLOG_CMAKE_CONFIGURATION=OFF
@@ -23,14 +24,14 @@ vcpkg_cmake_configure(
         -DFORCE_DEBUG_BUILD=True
 )
 
-vcpkg_cmake_install()
-vcpkg_cmake_config_fixup()
-vcpkg_replace_string("${CURRENT_PACKAGES_DIR}/share/cartographer/CartographerTargets.cmake" "${SOURCE_PATH}/;" "")
+vcpkg_install_cmake()
+vcpkg_fixup_cmake_targets()
 vcpkg_copy_pdbs()
 
 # Clean
-file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
-file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/share")
+file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include)
+file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/share)
 
 # Handle copyright of cartographer
-file(INSTALL "${SOURCE_PATH}/LICENSE" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)
+file(COPY ${SOURCE_PATH}/LICENSE DESTINATION ${CURRENT_PACKAGES_DIR}/share/cartographer)
+file(RENAME ${CURRENT_PACKAGES_DIR}/share/cartographer/LICENSE ${CURRENT_PACKAGES_DIR}/share/cartographer/copyright)

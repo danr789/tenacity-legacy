@@ -23,13 +23,9 @@ vcpkg_check_features(
       websockets CPPREST_EXCLUDE_WEBSOCKETS
 )
 
-if(VCPKG_TARGET_IS_UWP)
-    set(configure_opts WINDOWS_USE_MSBUILD)
-endif()
-
-vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}/Release"
-    ${configure_opts}
+vcpkg_configure_cmake(
+    SOURCE_PATH ${SOURCE_PATH}/Release
+    PREFER_NINJA
     OPTIONS
         ${OPTIONS}
         ${FEATURE_OPTIONS}
@@ -42,16 +38,16 @@ vcpkg_cmake_configure(
         -DCPPREST_INSTALL_HEADERS=OFF
 )
 
-vcpkg_cmake_install()
+vcpkg_install_cmake()
 
 vcpkg_copy_pdbs()
 
-vcpkg_cmake_config_fixup(CONFIG_PATH "lib/share/${PORT}")
-file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/lib/share" "${CURRENT_PACKAGES_DIR}/lib/share")
+vcpkg_fixup_cmake_targets(CONFIG_PATH lib/share/${PORT})
+file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/lib/share ${CURRENT_PACKAGES_DIR}/lib/share)
 
 if (VCPKG_LIBRARY_LINKAGE STREQUAL static)
-    vcpkg_replace_string("${CURRENT_PACKAGES_DIR}/include/cpprest/details/cpprest_compat.h"
+    vcpkg_replace_string(${CURRENT_PACKAGES_DIR}/include/cpprest/details/cpprest_compat.h
         "#ifdef _NO_ASYNCRTIMP" "#if 1")
 endif()
 
-file(INSTALL "${SOURCE_PATH}/license.txt" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)
+file(INSTALL ${SOURCE_PATH}/license.txt DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)

@@ -1,6 +1,6 @@
 --- a/SDL2Config.cmake
 +++ b/SDL2Config.cmake
-@@ -46,6 +46,7 @@ foreach(prop ${relprops})
+@@ -32,6 +2,7 @@
  	endif()
  endforeach()
  
@@ -8,7 +8,7 @@
  foreach(prop ${relprops})
  	get_target_property(sdl2mainimplib SDL2::SDL2main ${prop})
  	if(sdl2mainimplib)
-@@ -53,6 +54,7 @@ foreach(prop ${relprops})
+@@ -37,6 +37,7 @@
  		break()
  	endif()
  endforeach()
@@ -16,7 +16,7 @@
  
  foreach(prop ${dbgprops})
  	get_target_property(sdl2implibdbg SDL2::SDL2 ${prop})
-@@ -62,6 +64,7 @@ foreach(prop ${dbgprops})
+@@ -47,6 +47,7 @@
  	endif()
  endforeach()
  
@@ -24,7 +24,7 @@
  foreach(prop ${dbgprops})
  	get_target_property(sdl2mainimplibdbg SDL2::SDL2main ${prop})
  	if(sdl2mainimplibdbg)
-@@ -69,6 +72,7 @@ foreach(prop ${dbgprops})
+@@ -55,6 +55,7 @@
  		break()
  	endif()
  endforeach()

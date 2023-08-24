@@ -1,3 +1,5 @@
+vcpkg_fail_port_install(ON_ARCH "arm64")
+
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO clMathLibraries/clRNG
@@ -18,8 +20,9 @@ endif()
 string(COMPARE EQUAL "${VCPKG_TARGET_ARCHITECTURE}" "x64" BUILD64)
 string(COMPARE EQUAL "${VCPKG_LIBRARY_LINKAGE}" "dynamic" BUILD_SHARED_LIBRARY)
 
-vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}/src"
+vcpkg_configure_cmake(
+    SOURCE_PATH ${SOURCE_PATH}/src
+    PREFER_NINJA
     OPTIONS
         -DBUILD_SHARED_LIBRARY=${BUILD_SHARED_LIBRARY}
         -DBUILD64=${BUILD64}
@@ -28,9 +31,9 @@ vcpkg_cmake_configure(
         ${R123_SSE_FLAG}
 )
 
-vcpkg_cmake_install()
+vcpkg_install_cmake()
 
-file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
+file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include)
 if(VCPKG_LIBRARY_LINKAGE STREQUAL "static")
     file(
         REMOVE_RECURSE
@@ -38,8 +41,8 @@ if(VCPKG_LIBRARY_LINKAGE STREQUAL "static")
             "${CURRENT_PACKAGES_DIR}/debug/bin")
 endif()
 
-vcpkg_cmake_config_fixup(CONFIG_PATH lib/cmake/clRNG)
-vcpkg_fixup_pkgconfig()
+vcpkg_fixup_cmake_targets(CONFIG_PATH lib/cmake/clRNG)
+
 vcpkg_copy_pdbs()
 
-file(INSTALL "${SOURCE_PATH}/LICENSE" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)
+file(INSTALL "${SOURCE_PATH}/LICENSE" DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)

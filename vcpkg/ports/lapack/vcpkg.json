@@ -1,16 +1,16 @@
 {
   "name": "lapack",
-  "version-date": "2022-02-22",
+  "version-string": "3",
+  "port-version": 2,
   "description": "Metapackage for packages which provide LAPACK",
-  "license": null,
   "dependencies": [
     {
       "name": "clapack",
-      "platform": "(arm & windows) | uwp"
+      "platform": "arm & windows"
     },
     {
       "name": "lapack-reference",
-      "platform": "!((arm & windows) | uwp)"
+      "platform": "!arm | !windows"
     }
   ]
 }

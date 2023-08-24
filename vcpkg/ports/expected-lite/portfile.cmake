@@ -1,29 +1,29 @@
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO martinmoene/expected-lite
-    REF v0.6.0
-    SHA512 83b6b1ab2f1683aede5b9d00798f821299a1e78ab10d4d321c3def0d1d4be25f0f9fd244530715408940fc36c1dff7d635861cf52f10f7dbd3b975840150c121
-    HEAD_REF master
+    REF v0.3.0
+    SHA512 b24b58ff7bd6d5f355935854b6b5e67c7e9b2f1b6383ecdd2a1655833f414fd1189a07000b40c45a6df8a8641602c5eca19eb5e8639ac6cfe59e3d94bc102ab3
 )
 
-vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}"
+vcpkg_configure_cmake(
+    SOURCE_PATH ${SOURCE_PATH}
+    PREFER_NINJA
     OPTIONS
         -DEXPECTED_LITE_OPT_BUILD_TESTS=OFF
         -DEXPECTED_LITE_OPT_BUILD_EXAMPLES=OFF
 )
 
-vcpkg_cmake_install()
+vcpkg_install_cmake()
 
-vcpkg_cmake_config_fixup(
+vcpkg_fixup_cmake_targets(
     CONFIG_PATH lib/cmake/${PORT}
 )
 
 file(REMOVE_RECURSE
-    "${CURRENT_PACKAGES_DIR}/debug"
-    "${CURRENT_PACKAGES_DIR}/lib"
+    ${CURRENT_PACKAGES_DIR}/debug
+    ${CURRENT_PACKAGES_DIR}/lib
 )
 
 file(INSTALL
-    "${SOURCE_PATH}/LICENSE.txt" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright
+    ${SOURCE_PATH}/LICENSE.txt DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright
 )

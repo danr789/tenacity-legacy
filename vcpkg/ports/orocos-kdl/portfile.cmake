@@ -28,4 +28,3 @@ file(REMOVE_RECURSE
   ${CURRENT_PACKAGES_DIR}/doc/liborocos-kdl)
 
 file(INSTALL ${SOURCE_PATH}/orocos_kdl/COPYING DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)
-vcpkg_fixup_pkgconfig()

@@ -1,11 +1,9 @@
 {
   "name": "v8",
-  "version": "9.1.269.39",
-  "port-version": 4,
+  "version-string": "9.1.269.39",
   "description": "Google Chrome's JavaScript engine",
   "homepage": "https://v8.dev",
-  "license": "BSD-3-Clause",
-  "supports": "!(arm | arm64 | uwp | osx | linux)",
+  "supports": "!(arm | arm64 | uwp | osx)",
   "dependencies": [
     {
       "name": "glib",
@@ -15,10 +13,6 @@
     {
       "name": "pthread",
       "platform": "linux"
-    },
-    {
-      "name": "vcpkg-tool-python2",
-      "host": true
     },
     "zlib"
   ]

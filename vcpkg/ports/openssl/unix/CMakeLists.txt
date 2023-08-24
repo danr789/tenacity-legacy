@@ -60,10 +60,9 @@ message("CMAKE_C_FLAGS_DEBUG=${CMAKE_C_FLAGS_DEBUG}")
 message("CMAKE_INCLUDE_SYSTEM_FLAG_C=${CMAKE_INCLUDE_SYSTEM_FLAG_C}")
 message("CMAKE_C_OSX_DEPLOYMENT_TARGET_FLAG=${CMAKE_C_OSX_DEPLOYMENT_TARGET_FLAG}")
 
-string(TOUPPER "${CMAKE_BUILD_TYPE}" BUILD_TYPE)
-set(CFLAGS "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_${BUILD_TYPE}}")
-if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
-    set(CFLAGS "${CFLAGS} -Wno-error=unused-command-line-argument")
+set(CFLAGS "${CMAKE_C_FLAGS}")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    set(CFLAGS "-Wno-error=unused-command-line-argument ${CMAKE_C_FLAGS}")
 endif()
 if(CMAKE_C_COMPILER_TARGET AND CMAKE_C_COMPILE_OPTIONS_TARGET)
     set(CFLAGS "${CFLAGS} ${CMAKE_C_COMPILE_OPTIONS_TARGET}${CMAKE_C_COMPILER_TARGET}")
@@ -108,11 +107,10 @@ get_filename_component(MSYS_BIN_DIR "${MAKE}" DIRECTORY)
 
 if(BUILD_SHARED_LIBS)
     set(SHARED shared)
-    file(STRINGS "${BUILDDIR}/VERSION.dat" SHLIB_VERSION
-        REGEX "^SHLIB_VERSION=.*")
-    string(REGEX REPLACE "^(SHLIB_VERSION=)(.*)$" "\\2"
+    file(STRINGS "${BUILDDIR}/include/openssl/opensslv.h" SHLIB_VERSION
+        REGEX "^#[\t ]*define[\t ]+SHLIB_VERSION_NUMBER[\t ]+\".*\".*")
+    string(REGEX REPLACE "^.*SHLIB_VERSION_NUMBER[\t ]+\"([^\"]*)\".*$" "\\1"
         SHLIB_VERSION "${SHLIB_VERSION}")
-
     if(CMAKE_SYSTEM_NAME STREQUAL "Darwin" OR CMAKE_SYSTEM_NAME STREQUAL "iOS")
         set(LIB_EXT dylib)
         set(LIB_EXTS ${SHLIB_VERSION}.${LIB_EXT})
@@ -127,10 +125,9 @@ if(BUILD_SHARED_LIBS)
     list(APPEND BIN_EXTS ${BIN_EXT})
     list(APPEND LIB_EXTS ${LIB_EXT})
 else()
-    set(SHARED no-shared no-module)
+    set(SHARED no-shared)
     set(LIB_EXTS a)
 endif()
-set(INSTALL_PKG_CONFIGS "${BUILDDIR}/openssl.pc")
 foreach(lib ssl crypto)
     foreach(ext ${LIB_EXTS})
         list(APPEND INSTALL_LIBS "${BUILDDIR}/lib${lib}.${ext}")
@@ -170,7 +167,6 @@ if(NOT IOS)
         COMMAND ${ENV_COMMAND} RANLIB=${CMAKE_RANLIB}
         COMMAND ${ENV_COMMAND} MAKE=${MAKE}
         COMMAND ${ENV_COMMAND} MAKEDEPPROG=${CMAKE_C_COMPILER}
-        COMMAND ${ENV_COMMAND} WINDRES=${CMAKE_RC_COMPILER}
         VERBATIM
         APPEND
     )
@@ -263,7 +259,7 @@ if((CMAKE_SYSTEM_NAME STREQUAL "Darwin" OR CMAKE_SYSTEM_NAME STREQUAL "iOS") AND
         COMMAND /usr/bin/install_name_tool -id "${ID_PREFIX}/libssl.${SHLIB_VERSION}.dylib"
                                                "${BUILDDIR}/libssl.${SHLIB_VERSION}.dylib"
         COMMAND /usr/bin/install_name_tool -id "${ID_PREFIX}/libcrypto.${SHLIB_VERSION}.dylib"
-                                               "${BUILDDIR}/libcrypto.${SHLIB_VERSION}.dylib"
+                                               "${BUILDDIR}/libcrypto.1.1.dylib"
         COMMAND /usr/bin/install_name_tool -change "${CMAKE_INSTALL_PREFIX}/lib/libcrypto.${SHLIB_VERSION}.dylib"
                                                    "${ID_PREFIX}/libcrypto.${SHLIB_VERSION}.dylib"
                                                    "${BUILDDIR}/libssl.${SHLIB_VERSION}.dylib"

@@ -1,3 +1,5 @@
+vcpkg_check_linkage(ONLY_DYNAMIC_LIBRARY)
+
 vcpkg_from_bitbucket(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO mrexodia/devicenameresolver
@@ -7,17 +9,20 @@ vcpkg_from_bitbucket(
     PATCHES add-string-headfile.patch
 )
 
-file(COPY "${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt" DESTINATION "${SOURCE_PATH}")
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt DESTINATION ${SOURCE_PATH})
 
-vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}"
+vcpkg_configure_cmake(
+    SOURCE_PATH ${SOURCE_PATH}
+    PREFER_NINJA
     OPTIONS_DEBUG 
         -DDISABLE_INSTALL_HEADERS=ON
 )
 
-vcpkg_cmake_install()
+vcpkg_install_cmake()
 vcpkg_copy_pdbs()
 
-vcpkg_replace_string("${CURRENT_PACKAGES_DIR}/include/DeviceNameResolver.h" "__declspec(dllexport)" "")
+file(READ ${CURRENT_PACKAGES_DIR}/include/DeviceNameResolver.h _contents)
+string(REPLACE "__declspec(dllexport)" "" _contents "${_contents}")
+file(WRITE ${CURRENT_PACKAGES_DIR}/include/DeviceNameResolver.h "${_contents}")
 
-file(INSTALL "${SOURCE_PATH}/readme.txt" DESTINATION "${CURRENT_PACKAGES_DIR}/share/devicenameresolver" RENAME copyright)
+file(INSTALL ${SOURCE_PATH}/readme.txt DESTINATION ${CURRENT_PACKAGES_DIR}/share/devicenameresolver RENAME copyright)

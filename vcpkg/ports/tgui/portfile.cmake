@@ -23,9 +23,10 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
     tool    TGUI_BUILD_GUI_BUILDER
 )
 
-vcpkg_cmake_configure(
+vcpkg_configure_cmake(
     SOURCE_PATH "${SOURCE_PATH}"
     DISABLE_PARALLEL_CONFIGURE
+    PREFER_NINJA
     OPTIONS ${FEATURE_OPTIONS}
         -DTGUI_MISC_INSTALL_PREFIX=${TGUI_SHARE_PATH}
         -DTGUI_SHARED_LIBS=${TGUI_SHARED_LIBS}
@@ -33,8 +34,8 @@ vcpkg_cmake_configure(
         -DTGUI_BUILD_EXAMPLES=OFF
 )
 
-vcpkg_cmake_install()
-vcpkg_cmake_config_fixup(CONFIG_PATH lib/cmake/TGUI)
+vcpkg_install_cmake()
+vcpkg_fixup_cmake_targets(CONFIG_PATH lib/cmake/TGUI)
 vcpkg_copy_pdbs()
 
 if("tool" IN_LIST FEATURES)
@@ -58,8 +59,6 @@ file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/include/TGUI/extlibs/nanosvg" "${CU
 ) # All folders are empty
 
 file(RENAME "${CURRENT_PACKAGES_DIR}/share/doc" "${CURRENT_PACKAGES_DIR}/share/${PORT}/doc")
-
-vcpkg_fixup_pkgconfig()
 
 # Handle copyright
 file(INSTALL "${SOURCE_PATH}/license.txt" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)

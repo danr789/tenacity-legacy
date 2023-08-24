@@ -1,3 +1,5 @@
+vcpkg_fail_port_install(ON_ARCH "arm" "arm64")
+
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO dbry/WavPack
@@ -9,8 +11,9 @@ vcpkg_from_github(
         fix-symbol-exports.patch
 )
 
-vcpkg_cmake_configure(
+vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}
+    PREFER_NINJA # Disable this option if project cannot be built with Ninja
     OPTIONS
         -DWAVPACK_INSTALL_DOCS=OFF
         -DWAVPACK_BUILD_PROGRAMS=OFF
@@ -20,12 +23,12 @@ vcpkg_cmake_configure(
         -DWAVPACK_BUILD_DOCS=OFF
 )
 
-vcpkg_cmake_install()
+vcpkg_install_cmake()
 
 if(VCPKG_TARGET_IS_WINDOWS)
-    vcpkg_cmake_config_fixup(CONFIG_PATH cmake)
+    vcpkg_fixup_cmake_targets(CONFIG_PATH cmake)
 else()
-    vcpkg_cmake_config_fixup(CONFIG_PATH lib/cmake/WavPack)
+    vcpkg_fixup_cmake_targets(CONFIG_PATH lib/cmake/WavPack)
 endif()
 
 vcpkg_copy_pdbs()

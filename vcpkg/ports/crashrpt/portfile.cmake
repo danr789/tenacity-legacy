@@ -1,9 +1,11 @@
+vcpkg_fail_port_install(ON_TARGET "OSX" "Linux" "UWP")
+
 if(VCPKG_TARGET_ARCHITECTURE STREQUAL x86)
     set(ARCH_DIR "")
 elseif(VCPKG_TARGET_ARCHITECTURE STREQUAL x64)
     set(ARCH_DIR "x64/")
 else()
-    message(FATAL_ERROR "${PORT} only supports x86 and x64 architectures")
+    vcpkg_fail_port_install(MESSAGE "${PORT} only supports x86 and x64 architectures" ALWAYS)
 endif()
 
 vcpkg_from_git(

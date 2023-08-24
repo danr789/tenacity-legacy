@@ -31,7 +31,8 @@ vcpkg_check_features(
 )
 
 vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}"
+    SOURCE_PATH ${SOURCE_PATH}
+    PREFER_NINJA
     OPTIONS ${FEATURE_OPTIONS}
         -DCPM_USE_LOCAL_PACKAGES=ON
         -DBUILD_EXAMPLES=OFF

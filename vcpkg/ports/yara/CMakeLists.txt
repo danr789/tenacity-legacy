@@ -52,7 +52,6 @@ set(
   libyara/libyara.c
   libyara/mem.c
   libyara/modules.c
-  libyara/modules/console/console.c
   libyara/modules/cuckoo/cuckoo.c
   libyara/modules/dotnet/dotnet.c
   libyara/modules/elf/elf.c
@@ -85,13 +84,11 @@ set(
 set(
   yara_sources
   cli/args.c
-  cli/common.c
   cli/threading.c
   cli/yara.c
 )
 set( yarac_sources
   cli/args.c
-  cli/common.c
   cli/yarac.c
 )
 

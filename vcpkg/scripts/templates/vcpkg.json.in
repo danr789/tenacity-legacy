@@ -1,14 +1,9 @@
 {
   "name": "@PORT@",
-  "version": "",
+  "version-string": "",
   "homepage": "",
   "description": "",
-  "dependencies": [
-    {
-      "name": "vcpkg-cmake",
-      "host": true
-    }
-  ],
+  "dependencies": [],
 
   "default-features": [],
   "features": [

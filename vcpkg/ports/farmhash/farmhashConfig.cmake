@@ -13,7 +13,4 @@ get_filename_component(ROOT "${CMAKE_CURRENT_LIST_FILE}" PATH)
 get_filename_component(ROOT "${ROOT}" PATH)
 get_filename_component(ROOT "${ROOT}" PATH)
 
-set_library_target("GOOGLE" "farmhash"
-                   "${ROOT}/debug/lib/${CMAKE_STATIC_LIBRARY_PREFIX}farmhash${CMAKE_STATIC_LIBRARY_SUFFIX}"
-                   "${ROOT}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}farmhash${CMAKE_STATIC_LIBRARY_SUFFIX}"
-                   "${ROOT}/include/")
+set_library_target("GOOGLE" "farmhash" "${ROOT}/debug/lib/libfarmhash.a" "${ROOT}/lib/libfarmhash.a" "${ROOT}/include/")

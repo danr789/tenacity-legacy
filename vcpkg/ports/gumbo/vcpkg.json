@@ -1,18 +1,7 @@
 {
   "name": "gumbo",
-  "version": "0.10.1",
-  "port-version": 5,
+  "version-string": "0.10.1",
+  "port-version": 4,
   "description": "An HTML5 parsing library in pure C99",
-  "homepage": "https://github.com/google/gumbo-parser",
-  "license": "Apache-2.0",
-  "dependencies": [
-    {
-      "name": "vcpkg-cmake",
-      "host": true
-    },
-    {
-      "name": "vcpkg-cmake-config",
-      "host": true
-    }
-  ]
+  "homepage": "https://github.com/google/gumbo-parser"
 }

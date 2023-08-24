@@ -1,3 +1,5 @@
+vcpkg_fail_port_install(ON_ARCH "arm" "arm64" ON_TARGET "UWP")
+
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO BYVoid/OpenCC
@@ -48,4 +50,3 @@ endif()
 file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include ${CURRENT_PACKAGES_DIR}/debug/share)
 
 file(INSTALL ${SOURCE_PATH}/LICENSE DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)
-vcpkg_fixup_pkgconfig()

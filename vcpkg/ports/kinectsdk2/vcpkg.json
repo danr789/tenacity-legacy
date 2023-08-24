@@ -1,14 +1,7 @@
 {
   "name": "kinectsdk2",
-  "version": "2.0",
-  "port-version": 4,
+  "version-string": "2.0",
+  "port-version": 3,
   "description": "Kinect for Windows SDK for Kinect v2 sensor.",
-  "license": null,
-  "supports": "!arm & windows",
-  "dependencies": [
-    {
-      "name": "vcpkg-tool-lessmsi",
-      "host": true
-    }
-  ]
+  "supports": "!arm"
 }

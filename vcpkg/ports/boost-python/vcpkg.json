@@ -1,10 +1,9 @@
 {
   "name": "boost-python",
-  "version": "1.79.0",
+  "version": "1.77.0",
   "description": "Boost python module",
   "homepage": "https://github.com/boostorg/python",
-  "license": "BSL-1.0",
-  "supports": "!uwp & !emscripten & !ios & !android",
+  "supports": "!uwp & !(arm & windows) & !emscripten",
   "dependencies": [
     "boost-align",
     "boost-bind",
@@ -36,26 +35,17 @@
     "boost-type-traits",
     "boost-utility",
     "boost-vcpkg-helpers",
+    "python3",
     {
       "name": "vcpkg-cmake",
       "host": true
     }
   ],
-  "default-features": [
-    "python3"
-  ],
   "features": {
     "python2": {
       "description": "Build with Python2 support",
-      "supports": "!(arm & windows)",
       "dependencies": [
         "python2"
-      ]
-    },
-    "python3": {
-      "description": "Build with Python3 support",
-      "dependencies": [
-        "python3"
       ]
     }
   }

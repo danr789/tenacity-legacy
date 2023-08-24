@@ -92,16 +92,14 @@ if ([String]::IsNullOrEmpty($MachineId)) {
 }
 
 if (Test-Path '~/vagrant/vcpkg-eg-mac') {
-    Write-Host 'Deleting existing directories'
-
     Push-Location '~/vagrant/vcpkg-eg-mac'
-    vagrant destroy -f
-    if (-not $?) {
-        throw "Failed to destroy vagrant VM."
+    try {
+        Write-Host 'Deleting existing directories'
+        vagrant destroy -f
+        Remove-Item -Recurse -Force -LiteralPath '~/vagrant/vcpkg-eg-mac' | Out-Null
+    } finally {
+        Pop-Location
     }
-    Pop-Location
-
-    Remove-Item -Recurse -Force -LiteralPath '~/vagrant/vcpkg-eg-mac' | Out-Null
 }
 
 Write-Host 'Creating new directories'

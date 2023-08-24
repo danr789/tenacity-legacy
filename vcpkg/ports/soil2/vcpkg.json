@@ -1,13 +1,6 @@
 {
   "name": "soil2",
-  "version": "1.3.0",
+  "version-date": "2021-05-01",
   "description": "Simple OpenGL Image Library 2",
-  "homepage": "https://github.com/SpartanJ/SOIL2",
-  "license": "MIT-0",
-  "dependencies": [
-    {
-      "name": "vcpkg-cmake",
-      "host": true
-    }
-  ]
+  "homepage": "https://github.com/SpartanJ/SOIL2"
 }

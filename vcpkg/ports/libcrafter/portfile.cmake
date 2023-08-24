@@ -1,3 +1,5 @@
+vcpkg_fail_port_install(ON_TARGET "windows")
+
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO pellegre/libcrafter
@@ -20,7 +22,6 @@ vcpkg_install_make()
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
 
 vcpkg_copy_pdbs()
-vcpkg_fixup_pkgconfig()
 
 # Handle copyright
 file(INSTALL "${SOURCE_PATH}/libcrafter/LICENSE" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)

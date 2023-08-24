@@ -1,8 +1,7 @@
 {
   "name": "gasol",
-  "version-date": "2018-01-04",
-  "port-version": 2,
+  "version-string": "2018-01-04",
+  "port-version": 1,
   "description": "A general Genetic Algorithm Solver in C++",
-  "homepage": "https://github.com/PytLab/GASol",
-  "supports": "!uwp & !arm"
+  "homepage": "https://github.com/PytLab/GASol "
 }

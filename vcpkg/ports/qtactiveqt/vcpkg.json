@@ -1,9 +1,8 @@
 {
   "name": "qtactiveqt",
-  "version": "6.3.0",
+  "version-semver": "6.1.3",
   "description": "ActiveQt",
   "homepage": "https://www.qt.io/",
-  "license": null,
   "supports": "windows",
   "dependencies": [
     {
@@ -12,24 +11,12 @@
       "default-features": false
     },
     {
-      "$comment": "also requires printsupport!",
       "name": "qtbase",
-      "default-features": false,
-      "features": [
-        "gui",
-        "widgets"
-      ]
+      "default-features": false
+    },
+    {
+      "name": "qttools",
+      "default-features": false
     }
-  ],
-  "features": {
-    "qml": {
-      "description": "Build QML imports",
-      "dependencies": [
-        {
-          "name": "qtdeclarative",
-          "default-features": false
-        }
-      ]
-    }
-  }
+  ]
 }

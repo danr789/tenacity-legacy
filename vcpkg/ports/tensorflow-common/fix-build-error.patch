@@ -1,7 +1,8 @@
 diff --git a/tensorflow/core/platform/default/logging.h b/tensorflow/core/platform/default/logging.h
+index 99dd6de..3cbe8ed 100644
 --- a/tensorflow/core/platform/default/logging.h
 +++ b/tensorflow/core/platform/default/logging.h
-@@ -104,13 +104,13 @@ class LogMessageFatal : public LogMessage {
+@@ -82,13 +82,13 @@ class LogMessageFatal : public LogMessage {
  };
  
  #define _TF_LOG_INFO \

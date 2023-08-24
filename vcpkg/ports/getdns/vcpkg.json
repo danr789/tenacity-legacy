@@ -1,18 +1,13 @@
 {
   "name": "getdns",
-  "version": "1.7.0",
-  "port-version": 3,
+  "version-string": "1.6.0",
+  "port-version": 1,
   "description": "GetDNS is a modern asynchronous DNS API",
   "homepage": "https://getdnsapi.net/",
-  "license": "BSD-3-Clause",
-  "supports": "!uwp",
+  "supports": "!uwp & windows",
   "dependencies": [
     "libidn2",
-    "openssl",
-    {
-      "name": "vcpkg-cmake",
-      "host": true
-    }
+    "openssl"
   ],
   "features": {
     "libevent": {

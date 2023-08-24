@@ -9,15 +9,15 @@ if(MSVC)
   set(CMAKE_CXX_FLAGS "/wd4828 ${CMAKE_CXX_FLAGS}")
 endif()
 
-find_package(ZLIB           REQUIRED)
-find_package(PNG            REQUIRED)
-find_package(JPEG           REQUIRED)
-find_package(TIFF           REQUIRED)
-find_package(OpenJPEG       REQUIRED)
-find_package(WebP CONFIG    REQUIRED)
-find_package(JXR            REQUIRED)
-find_package(LibRaw         REQUIRED)
-find_package(OpenEXR        REQUIRED)
+find_package(ZLIB     REQUIRED)
+find_package(PNG      REQUIRED)
+find_package(JPEG     REQUIRED)
+find_package(TIFF     REQUIRED)
+find_package(OpenJPEG REQUIRED)
+find_package(WebP     REQUIRED)
+find_package(JXR      REQUIRED)
+find_package(LibRaw   REQUIRED)
+find_package(OpenEXR  REQUIRED)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(INSTALL_HEADERS "Install the development headers" ON)
@@ -93,6 +93,7 @@ target_include_directories(FreeImage PRIVATE ${REAL_SOURCE_DIR}
                                              ${TIFF_INCLUDE_DIRS}
                                              ${PNG_INCLUDE_DIRS}
                                              ${OPENJPEG_INCLUDE_DIRS}
+                                             ${WEBP_INCLUDE_DIRS}
                                              ${JXR_INCLUDE_DIRS}
                                              ${LibRaw_INCLUDE_DIRS}
                                              ${CMAKE_CURRENT_BINARY_DIR}
@@ -104,7 +105,7 @@ target_link_libraries(FreeImage ${ZLIB_LIBRARIES}
                                 ${TIFF_LIBRARIES}
                                 ${PNG_LIBRARIES}
                                 ${OPENJPEG_LIBRARIES}
-                                WebP::webp WebP::webpdemux WebP::libwebpmux WebP::webpdecoder
+                                ${WEBP_LIBRARIES}
                                 ${JXR_LIBRARIES}
                                 ${LibRaw_LIBRARIES}
                                 OpenEXR::IlmImf)
@@ -149,7 +150,7 @@ find_dependency(PNG)
 find_dependency(JPEG)
 find_dependency(TIFF)
 find_dependency(OpenJPEG)
-find_dependency(WebP CONFIG)
+find_dependency(WebP)
 find_dependency(JXR)
 find_dependency(LibRaw)
 find_dependency(OpenEXR)

@@ -1,3 +1,5 @@
+vcpkg_fail_port_install(ON_TARGET "WINDOWS")
+
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO BLAKE2/libb2

@@ -9,20 +9,21 @@ vcpkg_from_bitbucket(
     HEAD_REF master
 )
 
-file(COPY "${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt" DESTINATION "${SOURCE_PATH}")
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt DESTINATION ${SOURCE_PATH})
 file(REMOVE
-    "${SOURCE_PATH}/scylla_wrapper_dll/distorm.h"
-    "${SOURCE_PATH}/scylla_wrapper_dll/distorm_x64.lib"
-    "${SOURCE_PATH}/scylla_wrapper_dll/distorm_x86.lib"
+    ${SOURCE_PATH}/scylla_wrapper_dll/distorm.h
+    ${SOURCE_PATH}/scylla_wrapper_dll/distorm_x64.lib
+    ${SOURCE_PATH}/scylla_wrapper_dll/distorm_x86.lib
 )
 
-vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}"
+vcpkg_configure_cmake(
+    SOURCE_PATH ${SOURCE_PATH}
+    PREFER_NINJA
     OPTIONS_DEBUG 
         -DDISABLE_INSTALL_HEADERS=ON
 )
 
-vcpkg_cmake_install()
+vcpkg_install_cmake()
 vcpkg_copy_pdbs()
 
-file(INSTALL "${SOURCE_PATH}/README.md" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)
+file(INSTALL ${SOURCE_PATH}/README.md DESTINATION ${CURRENT_PACKAGES_DIR}/share/scylla-wrapper RENAME copyright)

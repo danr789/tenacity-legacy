@@ -1,7 +1,6 @@
 {
   "name": "opencv",
-  "version": "4.5.5",
-  "port-version": 1,
+  "version": "4.5.3",
   "description": "Computer vision library",
   "homepage": "https://github.com/opencv/opencv",
   "dependencies": [
@@ -11,7 +10,12 @@
     }
   ],
   "default-features": [
-    "default-features"
+    "dnn",
+    "jpeg",
+    "png",
+    "quirc",
+    "tiff",
+    "webp"
   ],
   "features": {
     "ade": {
@@ -62,43 +66,6 @@
         }
       ]
     },
-    "dc1394": {
-      "description": "Dc1394 support for opencv",
-      "dependencies": [
-        {
-          "name": "opencv4",
-          "default-features": false,
-          "features": [
-            "dc1394"
-          ]
-        }
-      ]
-    },
-    "default-features": {
-      "description": "Platform-dependent default features",
-      "dependencies": [
-        {
-          "name": "opencv4",
-          "default-features": false,
-          "features": [
-            "dnn",
-            "jpeg",
-            "png",
-            "quirc",
-            "tiff",
-            "webp"
-          ]
-        },
-        {
-          "name": "opencv4",
-          "default-features": false,
-          "features": [
-            "gtk"
-          ],
-          "platform": "linux"
-        }
-      ]
-    },
     "dnn": {
       "description": "Enable dnn module",
       "dependencies": [
@@ -135,18 +102,6 @@
         }
       ]
     },
-    "freetype": {
-      "description": "freetype support for opencv",
-      "dependencies": [
-        {
-          "name": "opencv4",
-          "default-features": false,
-          "features": [
-            "freetype"
-          ]
-        }
-      ]
-    },
     "gdcm": {
       "description": "GDCM support for opencv",
       "dependencies": [
@@ -155,30 +110,6 @@
           "default-features": false,
           "features": [
             "gdcm"
-          ]
-        }
-      ]
-    },
-    "gstreamer": {
-      "description": "gstreamer support for opencv",
-      "dependencies": [
-        {
-          "name": "opencv4",
-          "default-features": false,
-          "features": [
-            "gstreamer"
-          ]
-        }
-      ]
-    },
-    "gtk": {
-      "description": "GTK support for opencv",
-      "dependencies": [
-        {
-          "name": "opencv4",
-          "default-features": false,
-          "features": [
-            "gtk"
           ]
         }
       ]
@@ -311,18 +242,6 @@
           "default-features": false,
           "features": [
             "png"
-          ]
-        }
-      ]
-    },
-    "python": {
-      "description": "Python wrapper support for opencv",
-      "dependencies": [
-        {
-          "name": "opencv4",
-          "default-features": false,
-          "features": [
-            "python"
           ]
         }
       ]

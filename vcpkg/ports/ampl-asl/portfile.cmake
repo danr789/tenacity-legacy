@@ -1,5 +1,7 @@
 vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
 
+vcpkg_fail_port_install(ON_TARGET "UWP")
+
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO ampl/asl
@@ -13,8 +15,9 @@ vcpkg_from_github(
         install-targets.patch
 )
 
-vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}"
+vcpkg_configure_cmake(
+    SOURCE_PATH ${SOURCE_PATH}
+    PREFER_NINJA
     OPTIONS
         -DBUILD_MCMODELLARGE=OFF
         -DBUILD_DYNRT_LIBS=OFF # CRT linkage uses C/CXX FLAGS in vcpkg
@@ -22,13 +25,13 @@ vcpkg_cmake_configure(
         -DBUILD_CPP=ON
 )
 
-vcpkg_cmake_install()
+vcpkg_install_cmake()
 
 vcpkg_copy_pdbs()
 
-vcpkg_cmake_config_fixup(PACKAGE_NAME unofficial-asl)
+vcpkg_fixup_cmake_targets(CONFIG_PATH share/unofficial-asl TARGET_PATH share/unofficial-asl)
 
-file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
+file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include)
 
 # from ampl-mp license
-file(INSTALL "${CURRENT_PORT_DIR}/copyright" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
+file(INSTALL ${CURRENT_PORT_DIR}/copyright DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT})

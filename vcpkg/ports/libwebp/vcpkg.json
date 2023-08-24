@@ -1,12 +1,11 @@
 {
   "name": "libwebp",
-  "version": "1.2.2",
+  "version": "1.2.1",
   "description": "WebP codec: library to encode and decode images in WebP format",
   "homepage": "https://github.com/webmproject/libwebp",
   "dependencies": [
     {
       "name": "libwebp",
-      "default-features": false,
       "features": [
         "unicode"
       ],
@@ -22,7 +21,6 @@
     }
   ],
   "default-features": [
-    "libwebpmux",
     "nearlossless",
     "simd"
   ],
@@ -39,7 +37,6 @@
             "gif2webp",
             "img2webp",
             "info",
-            "libwebpmux",
             "mux",
             "nearlossless",
             "simd"
@@ -66,7 +63,6 @@
       "dependencies": [
         {
           "name": "libwebp",
-          "default-features": false,
           "features": [
             "img2webp",
             "mux"
@@ -85,7 +81,6 @@
       "dependencies": [
         {
           "name": "libwebp",
-          "default-features": false,
           "features": [
             "vwebp"
           ]
@@ -99,14 +94,7 @@
     "gif2webp": {
       "description": "Build the gif2webp conversion tool.",
       "dependencies": [
-        "giflib",
-        {
-          "name": "libwebp",
-          "default-features": false,
-          "features": [
-            "libwebpmux"
-          ]
-        }
+        "giflib"
       ]
     },
     "img2webp": {
@@ -114,13 +102,6 @@
       "dependencies": [
         "libjpeg-turbo",
         "libpng",
-        {
-          "name": "libwebp",
-          "default-features": false,
-          "features": [
-            "libwebpmux"
-          ]
-        },
         "tiff"
       ]
     },
@@ -128,31 +109,10 @@
       "description": "Build the webpinfo command line tool."
     },
     "libbwebpmux": {
-      "description": "Obsolete, use feature libwebpmux instead.",
-      "dependencies": [
-        {
-          "name": "libwebp",
-          "default-features": false,
-          "features": [
-            "libwebpmux"
-          ]
-        }
-      ]
-    },
-    "libwebpmux": {
       "description": "Build the libwebpmux library"
     },
     "mux": {
-      "description": "Build the webpmux command line tool.",
-      "dependencies": [
-        {
-          "name": "libwebp",
-          "default-features": false,
-          "features": [
-            "libwebpmux"
-          ]
-        }
-      ]
+      "description": "Build the webpmux command line tool."
     },
     "nearlossless": {
       "description": "Enable near-lossless encoding"
@@ -181,7 +141,6 @@
       "dependencies": [
         {
           "name": "libwebp",
-          "default-features": false,
           "features": [
             "vwebp"
           ]

@@ -1,3 +1,4 @@
+vcpkg_fail_port_install(ON_TARGET "uwp")
 vcpkg_check_linkage(ONLY_DYNAMIC_LIBRARY)
 
 set(LIB_VERSION 20210419)

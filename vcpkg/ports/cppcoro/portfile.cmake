@@ -1,3 +1,4 @@
+vcpkg_fail_port_install(ON_TARGET "uwp")
 vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
 
 if(VCPKG_TARGET_IS_LINUX)

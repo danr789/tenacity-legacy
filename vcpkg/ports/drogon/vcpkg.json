@@ -1,6 +1,7 @@
 {
   "name": "drogon",
-  "version-semver": "1.7.5",
+  "version-semver": "1.7.1",
+  "port-version": 2,
   "description": "A C++14/17 based HTTP web application framework running on Linux/macOS/Unix/Windows",
   "homepage": "https://github.com/an-tao/drogon",
   "documentation": "https://drogon.docsforge.com/master/overview/",
@@ -10,17 +11,9 @@
     "jsoncpp",
     {
       "name": "libuuid",
-      "platform": "!windows & !osx"
+      "platform": "!windows"
     },
     "trantor",
-    {
-      "name": "vcpkg-cmake",
-      "host": true
-    },
-    {
-      "name": "vcpkg-cmake-config",
-      "host": true
-    },
     "zlib"
   ],
   "features": {
@@ -50,7 +43,7 @@
       ]
     },
     "orm": {
-      "description": "Build with object-relational mapping support."
+      "description": "Build with Object-relational mapping support."
     },
     "postgres": {
       "description": "Support reading and writing from/to Postgres databases.",
@@ -72,12 +65,11 @@
           "features": [
             "orm"
           ]
-        },
-        "hiredis"
+        }
       ]
     },
     "sqlite3": {
-      "description": "Support reading and writing from/to SQLite databases.",
+      "description": "Support reading and writing from/to Sqlite databases.",
       "dependencies": [
         {
           "name": "drogon",

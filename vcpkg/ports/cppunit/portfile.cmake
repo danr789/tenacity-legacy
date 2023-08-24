@@ -1,23 +1,27 @@
+# UWP is not supported
+vcpkg_fail_port_install(ON_TARGET "uwp")
+
 vcpkg_download_distfile(ARCHIVE
-    URLS "https://dev-www.libreoffice.org/src/cppunit-1.15.1.tar.gz"
+    URLS "http://dev-www.libreoffice.org/src/cppunit-1.15.1.tar.gz"
     FILENAME "cppunit-1.15.1.tar.gz"
     SHA512 0feb47faec451357bb4c4e287efa17bb60fd3ad966d5350e9f25b414aaab79e94921024b0c0497672f8d3eeb22a599213d2d71d9e1d28b243b3e37f3a9a43691
 )
 
 vcpkg_extract_source_archive_ex(
     OUT_SOURCE_PATH SOURCE_PATH
-    ARCHIVE "${ARCHIVE}"
+    ARCHIVE ${ARCHIVE}
 )
 
 if(VCPKG_TARGET_IS_WINDOWS)
     # Use a simple CMakeLists.txt to build CppUnit on windows
-    file(COPY "${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt" DESTINATION "${SOURCE_PATH}")
+    file(COPY ${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt DESTINATION ${SOURCE_PATH})
 
-    vcpkg_cmake_configure(
-        SOURCE_PATH "${SOURCE_PATH}"
+    vcpkg_configure_cmake(
+        SOURCE_PATH ${SOURCE_PATH}
+        PREFER_NINJA
     )
 
-    vcpkg_cmake_install()
+    vcpkg_install_cmake()
 
     # Move EXE to 'tools'
     vcpkg_copy_tools(TOOL_NAMES DllPlugInTester AUTO_CLEAN)
@@ -47,13 +51,12 @@ else()
 endif()
 
 vcpkg_copy_pdbs()
-vcpkg_fixup_pkgconfig()
 
 # Handle copyright
-file(INSTALL "${SOURCE_PATH}/COPYING" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)
+file(INSTALL ${SOURCE_PATH}/COPYING DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)
 
 # Install CppUnitConfig.cmake
-file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/CppUnitConfig.cmake" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
+file(INSTALL ${CMAKE_CURRENT_LIST_DIR}/CppUnitConfig.cmake DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT})
 
 # Cleanup
 file(REMOVE_RECURSE

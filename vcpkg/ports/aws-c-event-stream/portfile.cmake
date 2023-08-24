@@ -9,9 +9,9 @@ vcpkg_from_github(
 
 vcpkg_cmake_configure(
     SOURCE_PATH "${SOURCE_PATH}"
-    OPTIONS
-        "-DCMAKE_MODULE_PATH=${CURRENT_INSTALLED_DIR}/share/aws-c-common"
-        -DBUILD_TESTING=FALSE
+    PREFER_NINJA
+	OPTIONS
+		"-DCMAKE_MODULE_PATH=${CURRENT_INSTALLED_DIR}/share/aws-c-common"
 )
 
 vcpkg_cmake_install()

@@ -16,22 +16,16 @@ vcpkg_extract_source_archive_ex(
     PATCHES 001-fix-static-build.patch
 )
 
-if(VCPKG_TARGET_IS_UWP)
-    set(configure_opts WINDOWS_USE_MSBUILD)
-endif()
-
-vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}"
-    ${configure_opts}
+vcpkg_configure_cmake(
+    SOURCE_PATH ${SOURCE_PATH}
+    PREFER_NINJA
     OPTIONS
         -DCERF_CPP=ON
         -DLIB_MAN=OFF
         -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
 )
 
-vcpkg_cmake_install()
+vcpkg_install_cmake()
 
-file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
-file(INSTALL "${SOURCE_PATH}/COPYING" DESTINATION "${CURRENT_PACKAGES_DIR}/share/libcerf" RENAME copyright)
-
-vcpkg_fixup_pkgconfig()
+file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include)
+file(INSTALL ${SOURCE_PATH}/COPYING DESTINATION ${CURRENT_PACKAGES_DIR}/share/libcerf RENAME copyright)

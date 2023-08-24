@@ -1,3 +1,5 @@
+vcpkg_fail_port_install(ON_ARCH "arm" "arm64" ON_TARGET "UWP")
+
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO xiaoyeli/superlu
@@ -25,5 +27,3 @@ vcpkg_copy_pdbs()
 file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include)
 
 file(INSTALL ${SOURCE_PATH}/License.txt DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)
-
-vcpkg_fixup_pkgconfig()

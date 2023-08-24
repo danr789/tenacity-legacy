@@ -1,17 +1,7 @@
 {
   "name": "libsigcpp",
-  "version": "3.2.0",
+  "version": "3.0.3",
+  "port-version": 1,
   "description": "Typesafe callback framework for C++",
-  "homepage": "https://libsigcplusplus.github.io/libsigcplusplus/",
-  "license": "LGPL-3.0",
-  "dependencies": [
-    {
-      "name": "vcpkg-cmake",
-      "host": true
-    },
-    {
-      "name": "vcpkg-cmake-config",
-      "host": true
-    }
-  ]
+  "homepage": "https://libsigcplusplus.github.io/libsigcplusplus/"
 }

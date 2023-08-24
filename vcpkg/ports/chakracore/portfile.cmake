@@ -1,3 +1,7 @@
+vcpkg_fail_port_install(ON_TARGET osx uwp)
+if(WIN32)
+    vcpkg_fail_port_install(ON_CRT_LINKAGE static ON_LIBRARY_LINKAGE static)
+endif()
 vcpkg_check_linkage(ONLY_DYNAMIC_LIBRARY)
 
 vcpkg_from_github(
@@ -45,7 +49,7 @@ else()
     if(NOT DEFINED VCPKG_BUILD_TYPE OR VCPKG_BUILD_TYPE STREQUAL "debug")
         list(APPEND configs "debug")
         execute_process(
-            COMMAND bash "build.sh" "--arch=${CHAKRACORE_TARGET_ARCH}" "--debug" "-j=${VCPKG_CONCURRENCY}"
+            COMMAND bash "build.sh" "--arch=${CHAKRACORE_TARGET_ARCH}" "--debug"
             WORKING_DIRECTORY "${BUILDTREE_PATH}"
 
             OUTPUT_VARIABLE CHAKRA_BUILD_SH_OUT
@@ -58,7 +62,7 @@ else()
     if(NOT DEFINED VCPKG_BUILD_TYPE OR VCPKG_BUILD_TYPE STREQUAL "release")
         list(APPEND configs "release")
         execute_process(
-            COMMAND bash "build.sh" "--arch=${CHAKRACORE_TARGET_ARCH}" "-j=${VCPKG_CONCURRENCY}"
+            COMMAND bash "build.sh" "--arch=${CHAKRACORE_TARGET_ARCH}"
             WORKING_DIRECTORY "${BUILDTREE_PATH}"
             OUTPUT_VARIABLE CHAKRA_BUILD_SH_OUT
             ERROR_VARIABLE CHAKRA_BUILD_SH_ERR

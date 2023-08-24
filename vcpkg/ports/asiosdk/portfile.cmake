@@ -1,3 +1,5 @@
+vcpkg_fail_port_install(ON_ARCH "arm" "arm64" ON_TARGET "Linux" "OSX" "uwp")
+
 set(VERSION 2.3.3)
 
 vcpkg_download_distfile(ARCHIVE

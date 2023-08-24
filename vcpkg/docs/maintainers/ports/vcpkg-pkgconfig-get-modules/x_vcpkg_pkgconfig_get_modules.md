@@ -10,7 +10,6 @@ Retrieve required module information from pkgconfig modules
 x_vcpkg_pkgconfig_get_modules(
     PREFIX <prefix>
     MODULES <pkgconfig_modules>...
-    [CFLAGS]
     [LIBS]
     [LIBRARIES]
     [LIBRARIES_DIRS]

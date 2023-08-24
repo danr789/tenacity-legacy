@@ -1,12 +1,6 @@
 {
   "name": "parallel-hashmap",
-  "version": "1.34",
-  "description": "A header-only, very fast and memory-friendly family of C++ hash map & btree containers.",
-  "license": "Apache-2.0",
-  "dependencies": [
-    {
-      "name": "vcpkg-cmake",
-      "host": true
-    }
-  ]
+  "version-string": "1.33",
+  "port-version": 1,
+  "description": "A header-only, very fast and memory-friendly family of C++ hash maps."
 }

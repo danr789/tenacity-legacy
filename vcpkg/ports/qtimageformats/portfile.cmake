@@ -2,17 +2,9 @@ set(VCPKG_POLICY_EMPTY_INCLUDE_FOLDER enabled) # Only plugins
 set(SCRIPT_PATH "${CURRENT_INSTALLED_DIR}/share/qtbase")
 include("${SCRIPT_PATH}/qt_install_submodule.cmake")
 
-if(NOT VCPKG_USE_HEAD_VERSION AND NOT QT_IS_LATEST)
-    set(${PORT}_PATCHES no_target_promotion.patch)
-else()
-    set(${PORT}_PATCHES no_target_promotion_latest.patch)
-endif()
+set(${PORT}_PATCHES)
 
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
-    FEATURES
-    #"jasper"              CMAKE_REQUIRE_FIND_PACKAGE_WrapJasper
-    #"webp"                CMAKE_REQUIRE_FIND_PACKAGE_WrapWebP
-    #"tiff"                CMAKE_REQUIRE_FIND_PACKAGE_TIFF
     INVERTED_FEATURES
     "jasper"              CMAKE_DISABLE_FIND_PACKAGE_WrapJasper
     "webp"                CMAKE_DISABLE_FIND_PACKAGE_WrapWebP

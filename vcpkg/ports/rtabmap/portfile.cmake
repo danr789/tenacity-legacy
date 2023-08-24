@@ -3,32 +3,27 @@ vcpkg_check_linkage(ONLY_DYNAMIC_LIBRARY)
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO introlab/rtabmap
-    REF a921d615c5cb4eb55a8dfc608dae6efde13e9126
-    SHA512 7787d5f927f53554cec3044221011cbc78b654c504d96af29947266e25058194923c5463aefde73b93dcfb3930eedf731f6af4d0c311d8f2f0d7be2114393e05
+    REF 0a9d237ac2968463d36c4c9b4436871a6c3ea0ca # 0.20.3
+    SHA512 47438eb07e4687855e89664479644b93f826da722c3556c30ed4b1a51cecb41494582d3ae3337ff4e0925f6db7ebf74fe29871bf930bb2eb51f5198090ac8554
     HEAD_REF master
-    PATCHES
-        fix-qt.patch
-        0001-add-bigobj-for-msvc.patch
+    PATCHES 
+        001_opencv.patch
 )
 
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
-    FEATURES
-        tools BUILD_TOOLS
+    tools BUILD_TOOLS
 )
 
-vcpkg_cmake_configure(
+vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}
-    DISABLE_PARALLEL_CONFIGURE
+    PREFER_NINJA
     OPTIONS
         ${FEATURE_OPTIONS}
         -DBUILD_APP=OFF
         -DBUILD_EXAMPLES=OFF
         -DWITH_QT=OFF
-        -DWITH_ORB_OCTREE=OFF
-        -DWITH_TORCH=OFF
-        -DWITH_PYTHON=OFF
-        -DWITH_PYTHON_THREADING=OFF
-        -DWITH_PDAL=OFF
+        -DWITH_SUPERPOINT_TORCH=OFF
+        -DWITH_PYMATCHER=OFF
         -DWITH_FREENECT=OFF
         -DWITH_FREENECT2=OFF
         -DWITH_K4W2=OFF
@@ -41,16 +36,13 @@ vcpkg_cmake_configure(
         -DWITH_VERTIGO=OFF
         -DWITH_CVSBA=OFF
         -DWITH_POINTMATCHER=OFF
-        -DWITH_CCCORELIB=OFF
         -DWITH_LOAM=OFF
         -DWITH_FLYCAPTURE2=OFF
         -DWITH_ZED=OFF
-        -DWITH_ZEDOC=OFF
         -DWITH_REALSENSE=OFF
         -DWITH_REALSENSE_SLAM=OFF
         -DWITH_REALSENSE2=OFF
         -DWITH_MYNTEYE=OFF
-        -DWITH_DEPTHAI=OFF
         -DWITH_OCTOMAP=OFF
         -DWITH_CPUTSDF=OFF
         -DWITH_OPENCHISEL=OFF
@@ -58,16 +50,15 @@ vcpkg_cmake_configure(
         -DWITH_FOVIS=OFF
         -DWITH_VISO2=OFF
         -DWITH_DVO=OFF
+        -DWITH_ORB_SLAM2=OFF
         -DWITH_OKVIS=OFF
         -DWITH_MSCKF_VIO=OFF
         -DWITH_VINS=OFF
-        -DWITH_OPENVINS=OFF
-        -DWITH_MADGWICK=OFF
         -DWITH_FASTCV=OFF
 )
 
-vcpkg_cmake_install()
-vcpkg_cmake_config_fixup(CONFIG_PATH cmake)
+vcpkg_install_cmake()
+vcpkg_fixup_cmake_targets(CONFIG_PATH cmake)
 
 vcpkg_copy_tools(TOOL_NAMES rtabmap-res_tool AUTO_CLEAN)
 

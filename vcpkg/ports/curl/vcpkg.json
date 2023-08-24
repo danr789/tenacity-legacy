@@ -1,10 +1,8 @@
 {
   "name": "curl",
-  "version": "7.83.1",
-  "port-version": 2,
+  "version": "7.79.1",
   "description": "A library for transferring data with URLs",
-  "homepage": "https://curl.se/",
-  "license": null,
+  "homepage": "https://github.com/curl/curl",
   "dependencies": [
     {
       "name": "vcpkg-cmake",
@@ -70,7 +68,11 @@
     "idn2": {
       "description": "idn2 support (libidn2)",
       "dependencies": [
-        "libidn2"
+        "libidn2",
+        {
+          "name": "vcpkg-pkgconfig-get-modules",
+          "host": true
+        }
       ]
     },
     "mbedtls": {
@@ -183,12 +185,6 @@
             "schannel"
           ]
         }
-      ]
-    },
-    "wolfssl": {
-      "description": "SSL support (wolfSSL)",
-      "dependencies": [
-        "wolfssl"
       ]
     }
   }

@@ -1,3 +1,5 @@
+vcpkg_fail_port_install(ON_TARGET "UWP")
+
 vcpkg_from_gitlab(
     GITLAB_URL https://gitlab.kitware.com
     OUT_SOURCE_PATH SOURCE_PATH

@@ -8,8 +8,9 @@ vcpkg_from_github(
     HEAD_REF master
 )
 
-vcpkg_cmake_configure(
+vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}
+    PREFER_NINJA
     DISABLE_PARALLEL_CONFIGURE
     OPTIONS_RELEASE -DCXXBLAS_DEBUG=OFF
     OPTIONS_DEBUG -DCXXBLAS_DEBUG=ON
@@ -21,13 +22,11 @@ vcpkg_cmake_configure(
         -DDOWNLOAD_GBENCHMARK=OFF
 )
 
-vcpkg_cmake_install()
+vcpkg_install_cmake()
 
-file(REMOVE "${CURRENT_PACKAGES_DIR}/include/xtensor-blas/xblas_config_cling.hpp")
+vcpkg_fixup_cmake_targets(CONFIG_PATH lib/cmake/${PORT})
 
-vcpkg_cmake_config_fixup(CONFIG_PATH lib/cmake/${PORT})
+file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug ${CURRENT_PACKAGES_DIR}/lib)
+file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/include/xflens/cxxblas/netlib)
 
-file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug" "${CURRENT_PACKAGES_DIR}/lib")
-file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/include/xflens/cxxblas/netlib")
-
-file(INSTALL "${SOURCE_PATH}/LICENSE" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)
+file(INSTALL ${SOURCE_PATH}/LICENSE DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)

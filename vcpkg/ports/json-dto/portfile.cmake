@@ -1,12 +1,13 @@
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO stiffstream/json_dto
-    REF 9a08aaab6caee28300043c96e1ad3e6700f0f8fc # v.0.3.1
-    SHA512 09ca1072a3de2cc5c5ab6eeaa1b82014dcc6139992da84558e77fe4bfa42210ff9f7fa6ee7d7e6b2d4ac15fd7ae6286a6a56d8a72cce75fc73b91755bb831864
+    REF 7fce92cd3bdacdcd0b41ed26d2cc981e3f70956e # v.0.2.13
+    SHA512 f678545cc60828ab76d6e8532ac9dbf8e4e68d873d0a98f17d62934dd0b3a3e255b38adf838b65a12e0d954edc7866eb6393f6783709f6f7fac29167886e7bf3
 )
 
-vcpkg_cmake_configure(
+vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}/dev
+    PREFER_NINJA # Disable this option if project cannot be built with Ninja
     OPTIONS
         -DJSON_DTO_INSTALL=ON
         -DJSON_DTO_TEST=OFF
@@ -14,9 +15,9 @@ vcpkg_cmake_configure(
         -DJSON_DTO_INSTALL_SAMPLES=OFF
 )
 
-vcpkg_cmake_install()
+vcpkg_install_cmake()
 
-vcpkg_cmake_config_fixup(CONFIG_PATH lib/cmake/json-dto)
+vcpkg_fixup_cmake_targets(CONFIG_PATH lib/cmake/json-dto)
 
 file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/lib ${CURRENT_PACKAGES_DIR}/debug)
 

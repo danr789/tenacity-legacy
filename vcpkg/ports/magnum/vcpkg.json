@@ -1,20 +1,15 @@
 {
   "name": "magnum",
   "version-string": "2020.06",
-  "port-version": 10,
+  "port-version": 7,
   "description": "C++11/C++14 graphics middleware for games and data visualization",
   "homepage": "https://magnum.graphics/",
-  "license": null,
   "dependencies": [
     {
       "name": "corrade",
       "features": [
         "utility"
       ]
-    },
-    {
-      "name": "vcpkg-cmake",
-      "host": true
     }
   ],
   "default-features": [

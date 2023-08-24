@@ -1,21 +1,31 @@
-set(LIBTIFF_VERSION 4.4.0)
+set(LIBTIFF_VERSION 4.3.0)
 
-vcpkg_from_gitlab(
-    GITLAB_URL https://gitlab.com
+vcpkg_download_distfile(ARCHIVE
+    URLS "https://download.osgeo.org/libtiff/tiff-${LIBTIFF_VERSION}.tar.gz"
+    FILENAME "tiff-${LIBTIFF_VERSION}.tar.gz"
+    SHA512 e04a4a6c542e58a174c1e9516af3908acf1d3d3e1096648c5514f4963f73e7af27387a76b0fbabe43cf867a18874088f963796a7cd6e45deb998692e3e235493
+)
+
+vcpkg_extract_source_archive_ex(
     OUT_SOURCE_PATH SOURCE_PATH
-    REPO libtiff/libtiff
-    REF v${LIBTIFF_VERSION}
-    SHA512 93955a2b802cf243e41d49048499da73862b5d3ffc005e3eddf0bf948a8bd1537f7c9e7f112e72d082549b4c49e256b9da9a3b6d8039ad8fc5c09a941b7e75d7
-    HEAD_REF master
+    ARCHIVE "${ARCHIVE}"
+    REF ${LIBTIFF_VERSION}
     PATCHES
         cmakelists.patch
+        fix-pkgconfig.patch
         FindCMath.patch
-        android-libm.patch
 )
 
 set(EXTRA_OPTIONS "")
 if(VCPKG_TARGET_IS_UWP)
     list(APPEND EXTRA_OPTIONS "-DUSE_WIN32_FILEIO=OFF")  # On UWP we use the unix I/O api.
+endif()
+
+if("cxx" IN_LIST FEATURES)
+    vcpkg_fail_port_install(
+        MESSAGE "Feature 'cxx' is not supported on ${VCPKG_TARGET_ARCHITECTURE}."
+        ON_ARCH arm arm64
+    )
 endif()
 
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
@@ -37,19 +47,16 @@ vcpkg_cmake_configure(
         -DBUILD_DOCS=OFF
         -DBUILD_CONTRIB=OFF
         -DBUILD_TESTS=OFF
+        -DCMAKE_DEBUG_POSTFIX=d # tiff sets "d" for MSVC only.
         -Dlibdeflate=OFF
         -Djbig=OFF # This is disabled by default due to GPL/Proprietary licensing.
         -Djpeg12=OFF
         -Dlerc=OFF
         -DCMAKE_DISABLE_FIND_PACKAGE_OpenGL=ON
         -DCMAKE_DISABLE_FIND_PACKAGE_GLUT=ON
-    OPTIONS_DEBUG
-        -DCMAKE_DEBUG_POSTFIX=d # tiff sets "d" for MSVC only.
 )
 
 vcpkg_cmake_install()
-
-vcpkg_cmake_config_fixup(CONFIG_PATH "lib/cmake/${PORT}")
 
 set(_file "${CURRENT_PACKAGES_DIR}/debug/lib/pkgconfig/libtiff-4.pc")
 if(EXISTS "${_file}")

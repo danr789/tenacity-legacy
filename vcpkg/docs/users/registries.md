@@ -52,11 +52,9 @@ The `"kind"` field must be a string:
 
 #### Registry Objects: `"baseline"`
 
-The `"baseline"` field must be a string. It defines a minimum version for all packages coming from this registry configuration.
-
-For [Git Registries](../maintainers/registries.md#git-registries) and for the [Builtin Registry](../maintainers/registries.md#builtin-registries), it should be a 40-character git commit sha in the registry's repository that contains a `versions/baseline.json`.
-
-For [Filesystem Registries](../maintainers/registries.md#filesystem-registries), it can be any valid baseline string that the registry defines.
+The `"baseline"` field must be a string. For git registries and for the 
+built-in registry, it should be a 40-character commit ID.
+For filesystem registries, it can be any string that the registry defines.
 
 #### Registry Objects: `"repository"`
 
@@ -99,7 +97,7 @@ will work:
 {
   "default-registry": {
     "kind": "git",
-    "repository": "https://internal/mirror/of/github.com/Microsoft/vcpkg",
+    "repository": "https://git.example.com/vcpkg",
     "baseline": "eefee7408133f3a0fef711ef9c6a3677b7e06fd7"
   },
   "registries": [

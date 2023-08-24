@@ -2,7 +2,10 @@
 
 **The latest version of this documentation is available on [GitHub](https://github.com/Microsoft/vcpkg/tree/master/docs/users/android.md).**
 
-*Android is not tested as part of vcpkg repository's CI process, so regressions can occur as part of library updates. PRs improving support are welcome!*
+Android is not officially supported, and there are no official android triplets at the moment.
+
+However, some packages can compile to Android, and the situation is improving: see the list of [PR related to Android](https://github.com/Microsoft/vcpkg/pulls?q=+android+).
+
 
 ## Android build requirements
 
@@ -27,7 +30,10 @@ export ANDROID_NDK_HOME=/home/your-account/Android/android-ndk-r21b
 export VCPKG_ROOT=/path/to/vcpkg
 ````
 
-## vcpkg triplets and their corresponding android ABI
+## Create the android triplets
+
+
+### Android ABI and corresponding vcpkg triplets
 
 There are four different Android ABI, each of which maps to 
 a vcpkg triplet. The following table outlines the mapping from vcpkg architectures to android architectures
@@ -38,6 +44,41 @@ a vcpkg triplet. The following table outlines the mapping from vcpkg architectur
 |arm-android                | armeabi-v7a          |
 |x64-android                | x86_64               |
 |x86-android                | x86                  |
+
+### Create the android triplets
+You can copy-paste the script below to populate them, and adjust them to your needs if required.
+
+````bash
+cd $VCPKG_ROOT
+
+echo "
+set(VCPKG_TARGET_ARCHITECTURE arm)
+set(VCPKG_CRT_LINKAGE dynamic)
+set(VCPKG_LIBRARY_LINKAGE dynamic)
+set(VCPKG_CMAKE_SYSTEM_NAME Android)
+" > triplets/community/arm-android.cmake
+
+echo "
+set(VCPKG_TARGET_ARCHITECTURE arm64)
+set(VCPKG_CRT_LINKAGE dynamic)
+set(VCPKG_LIBRARY_LINKAGE dynamic)
+set(VCPKG_CMAKE_SYSTEM_NAME Android)
+" > triplets/community/arm64-android.cmake
+ 
+echo "
+set(VCPKG_TARGET_ARCHITECTURE x86)
+set(VCPKG_CRT_LINKAGE dynamic)
+set(VCPKG_LIBRARY_LINKAGE dynamic)
+set(VCPKG_CMAKE_SYSTEM_NAME Android)
+" > triplets/community/x86-android.cmake
+
+echo "
+set(VCPKG_TARGET_ARCHITECTURE x64)
+set(VCPKG_CRT_LINKAGE dynamic)
+set(VCPKG_LIBRARY_LINKAGE dynamic)
+set(VCPKG_CMAKE_SYSTEM_NAME Android)
+" > triplets/community/x64-android.cmake
+````
 
 ## Install libraries for Android using vcpkg
 

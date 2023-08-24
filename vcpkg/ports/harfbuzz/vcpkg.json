@@ -1,10 +1,8 @@
 {
   "name": "harfbuzz",
-  "version": "4.2.0",
-  "port-version": 1,
+  "version-semver": "2.9.0",
   "description": "HarfBuzz OpenType text shaping engine",
   "homepage": "https://github.com/harfbuzz/harfbuzz",
-  "license": "MIT-Modern-Variant",
   "dependencies": [
     {
       "name": "freetype",
@@ -13,16 +11,11 @@
     {
       "name": "gettext",
       "platform": "osx"
-    },
-    {
-      "name": "vcpkg-tool-meson",
-      "host": true
     }
   ],
   "features": {
     "coretext": {
-      "description": "Enable CoreText shaper backend on macOS",
-      "supports": "osx"
+      "description": "Enable CoreText shaper backend on macOS"
     },
     "glib": {
       "description": "Glib Unicode callbacks support",

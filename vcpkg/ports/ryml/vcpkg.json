@@ -1,21 +1,13 @@
 {
   "name": "ryml",
-  "version": "0.4.1",
+  "version-date": "2021-07-24",
   "description": "Rapid YAML library",
   "homepage": "https://github.com/biojppm/rapidyaml",
-  "license": "MIT",
+  "supports": "!osx",
   "dependencies": [
     {
       "name": "c4core",
       "default-features": false
-    },
-    {
-      "name": "vcpkg-cmake",
-      "host": true
-    },
-    {
-      "name": "vcpkg-cmake-config",
-      "host": true
     }
   ],
   "default-features": [

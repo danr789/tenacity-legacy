@@ -1,6 +1,7 @@
 {
   "name": "opengl-registry",
-  "version-date": "2021-11-17",
+  "version-string": "2020-03-25",
+  "port-version": 1,
   "description": "the API and Extension registries for the OpenGL family APIs",
   "homepage": "https://github.com/KhronosGroup/OpenGL-Registry",
   "dependencies": [

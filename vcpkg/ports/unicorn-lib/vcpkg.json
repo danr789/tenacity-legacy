@@ -1,19 +1,13 @@
 {
   "name": "unicorn-lib",
-  "version-date": "2022-01-24",
+  "version-string": "2020-03-02",
+  "port-version": 1,
   "description": "Unicode library for C++ by Ross Smith",
   "homepage": "https://github.com/CaptainCrowbar/unicorn-lib",
-  "license": "MIT",
   "dependencies": [
+    "libiconv",
     "pcre2",
-    {
-      "name": "vcpkg-cmake",
-      "host": true
-    },
-    {
-      "name": "vcpkg-cmake-config",
-      "host": true
-    },
+    "rs-core-lib",
     "zlib"
   ]
 }

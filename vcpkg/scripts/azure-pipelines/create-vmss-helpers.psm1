@@ -321,26 +321,22 @@ function Create-LockedDownNetwork {
 }
 
 function Invoke-AzVMRunCommandWithRetries {
-  $result = $null
-  $success = $false
-  $attempt = 0
-  while ($success -eq $false) {
-    try {
-      ++$attempt
-      Write-Host "Command attempt $attempt..."
-      $result = Invoke-AzVMRunCommand @args
-      $success = $true
-    } catch {
+  try {
+    return Invoke-AzVMRunCommand @args
+  } catch {
+    for ($idx = 0; $idx -lt 5; $idx++) {
       Write-Host "Running command failed. $_ Retrying after 10 seconds..."
       Start-Sleep -Seconds 10
-      if ($attempt -eq 5) {
-        Write-Error "Running command failed too many times. Giving up!"
-        throw $_
+      try {
+        return Invoke-AzVMRunCommand @args
+      } catch {
+        # ignore
       }
     }
-  }
 
-  return $result
+    Write-Host "Running command failed too many times. Giving up!"
+    throw $_
+  }
 }
 
 Export-ModuleMember -Function Find-ResourceGroupName

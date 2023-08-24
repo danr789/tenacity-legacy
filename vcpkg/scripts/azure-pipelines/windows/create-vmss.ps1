@@ -25,7 +25,7 @@ Param(
   [string]$ImageName
 )
 
-$Location = 'eastasia'
+$Location = 'westus2'
 $Prefix = 'PrWin-'
 $Prefix += (Get-Date -Format 'yyyy-MM-dd')
 $VMSize = 'Standard_D32a_v4'

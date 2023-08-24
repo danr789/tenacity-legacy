@@ -10,8 +10,9 @@ vcpkg_from_github(
     PATCHES fix-build.patch
 )
 
-vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}"
+vcpkg_configure_cmake(
+    SOURCE_PATH ${SOURCE_PATH}
+    PREFER_NINJA
     OPTIONS
         -DBUILD_WALL=ON
         -DBUILD_SPEED_OPTIMIZED=ON
@@ -20,15 +21,15 @@ vcpkg_cmake_configure(
         -DBUILD_LIBNOISE_EXAMPLES=OFF
 )
 
-vcpkg_cmake_install()
+vcpkg_install_cmake()
 
-file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
-vcpkg_cmake_config_fixup(PACKAGE_NAME unofficial-noise CONFIG_PATH share/unofficial-noise)
-vcpkg_cmake_config_fixup(PACKAGE_NAME unofficial-noiseutils CONFIG_PATH share/unofficial-noiseutils)
+file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include)
 
 if (VCPKG_LIBRARY_LINKAGE STREQUAL static)
     vcpkg_replace_string(${CURRENT_PACKAGES_DIR}/include/noise/module/modulebase.h
         "if NOISE_STATIC" "if 1" )
 endif()
 
-file(INSTALL "${SOURCE_PATH}/LICENSE.md" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)
+file(INSTALL ${SOURCE_PATH}/cmake/Modules/FindLibNoise.cmake DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT})
+
+file(INSTALL ${SOURCE_PATH}/LICENSE.md DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)

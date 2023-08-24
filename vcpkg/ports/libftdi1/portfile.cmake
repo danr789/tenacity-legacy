@@ -14,10 +14,11 @@ vcpkg_extract_source_archive_ex(
         win32.patch
 )
 
-file(COPY "${CMAKE_CURRENT_LIST_DIR}/exports.def" DESTINATION "${SOURCE_PATH}/src")
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/exports.def DESTINATION ${SOURCE_PATH}/src)
 
-vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}"
+vcpkg_configure_cmake(
+    SOURCE_PATH ${SOURCE_PATH}
+    PREFER_NINJA
     OPTIONS
         -DBUILD_TESTS=OFF
         -DDOCUMENTATION=OFF
@@ -32,13 +33,11 @@ vcpkg_cmake_configure(
         -DFTDI_EEPROM=OFF
 )
 
-vcpkg_cmake_install()
+vcpkg_install_cmake()
 
-vcpkg_cmake_config_fixup(CONFIG_PATH lib/cmake/libftdi1)
+vcpkg_fixup_cmake_targets(CONFIG_PATH lib/cmake/libftdi1 TARGET_PATH share/libftdi1)
 
-vcpkg_fixup_pkgconfig()
-
-file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include" "${CURRENT_PACKAGES_DIR}/debug/share")
+file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include ${CURRENT_PACKAGES_DIR}/debug/share)
 
 if(VCPKG_LIBRARY_LINKAGE STREQUAL "static")
     file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/bin" "${CURRENT_PACKAGES_DIR}/debug/bin")
@@ -46,4 +45,4 @@ endif()
 
 vcpkg_copy_pdbs()
 
-file(INSTALL "${SOURCE_PATH}/LICENSE" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)
+file(INSTALL ${SOURCE_PATH}/LICENSE DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)

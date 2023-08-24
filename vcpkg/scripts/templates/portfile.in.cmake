@@ -29,12 +29,9 @@
 #
 # 	See additional helpful variables in /docs/maintainers/vcpkg_common_definitions.md
 
-# Also consider vcpkg_from_* functions if you can; the generated code here is for any web accessable
-# source archive.
-#  vcpkg_from_github
-#  vcpkg_from_gitlab
-#  vcpkg_from_bitbucket
-#  vcpkg_from_sourceforge
+# # Specifies if the port install should fail immediately given a condition
+# vcpkg_fail_port_install(MESSAGE "@PORT@ currently only supports Linux and Mac platforms" ON_TARGET "Windows")
+
 vcpkg_download_distfile(ARCHIVE
     URLS "@URL@"
     FILENAME "@FILENAME@"
@@ -43,7 +40,7 @@ vcpkg_download_distfile(ARCHIVE
 
 vcpkg_extract_source_archive_ex(
     OUT_SOURCE_PATH SOURCE_PATH
-    ARCHIVE "${ARCHIVE}"
+    ARCHIVE ${ARCHIVE}
     # (Optional) A friendly name to use instead of the filename of the archive (e.g.: a version number or tag).
     # REF 1.0.0
     # (Optional) Read the docs for how to generate patches at:
@@ -62,23 +59,19 @@ vcpkg_extract_source_archive_ex(
 #     tbb   ROCKSDB_IGNORE_PACKAGE_TBB
 # )
 
-vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}"
+vcpkg_configure_cmake(
+    SOURCE_PATH ${SOURCE_PATH}
+    PREFER_NINJA # Disable this option if project cannot be built with Ninja
     # OPTIONS -DUSE_THIS_IN_ALL_BUILDS=1 -DUSE_THIS_TOO=2
     # OPTIONS_RELEASE -DOPTIMIZE=1
     # OPTIONS_DEBUG -DDEBUGGABLE=1
 )
 
-vcpkg_cmake_install()
+vcpkg_install_cmake()
 
 # # Moves all .cmake files from /debug/share/@PORT@/ to /share/@PORT@/
-# # See /docs/maintainers/ports/vcpkg-cmake-config/vcpkg_cmake_config_fixup.md for more details
-# When you uncomment "vcpkg_cmake_config_fixup()", you need to add the following to "dependencies" vcpkg.json:
-#{
-#    "name": "vcpkg-cmake-config",
-#    "host": true
-#}
-# vcpkg_cmake_config_fixup(CONFIG_PATH cmake TARGET_PATH share/@PORT@)
+# # See /docs/maintainers/vcpkg_fixup_cmake_targets.md for more details
+# vcpkg_fixup_cmake_targets(CONFIG_PATH cmake TARGET_PATH share/@PORT@)
 
-# Uncomment the line below if necessary to install the license file for the port to share/${PORT}/copyright
-# file(INSTALL "${SOURCE_PATH}/LICENSE" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)
+# # Handle copyright
+# file(INSTALL ${SOURCE_PATH}/LICENSE DESTINATION ${CURRENT_PACKAGES_DIR}/share/@PORT@ RENAME copyright)

@@ -1,3 +1,5 @@
+
+vcpkg_fail_port_install(ON_ARCH "arm" ON_TARGET "UWP" "Linux" "OSX")
 if(VCPKG_TARGET_ARCHITECTURE STREQUAL "x86")
     set(PLATFORM x86)
 endif()

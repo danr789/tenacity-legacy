@@ -23,14 +23,9 @@ The type and parameters of the binary source. Shared across runs of this script.
 this parameter is not set, binary caching will not be used. Example: "files,W:\"
 
 .PARAMETER BuildReason
-The reason Azure Pipelines is running this script. For invocations caused by `PullRequest`,
-modified ports are identified by changed hashes with regard to git HEAD~1 (subject to NoParentHashes),
-and ports marked as failing in the CI baseline (or which depend on such ports) are skipped.
-If BinarySourceStub is set and this parameter is set to a non-empty value other than `PullRequest`,
-binary caching will be in write-only mode.
-
-.PARAMETER NoParentHashes
-Indicates to not use parent hashes even for pull requests.
+The reason Azure Pipelines is running this script (controls in which mode Binary Caching is used).
+If BinarySourceStub is not set, this parameter has no effect. If BinarySourceStub is set and this is
+not, binary caching will default to read-write mode.
 
 .PARAMETER PassingIsPassing
 Indicates that 'Passing, remove from fail list' results should not be emitted as failures. (For example, this is used
@@ -51,9 +46,9 @@ Param(
     $ArchivesRoot = $null,
     [Parameter(ParameterSetName='BinarySourceStub')]
     $BinarySourceStub = $null,
-    [String]$BuildReason = $null,
-    [switch]$NoParentHashes = $false,
-    [switch]$PassingIsPassing = $false
+    $BuildReason = $null,
+    [switch]
+    $PassingIsPassing = $false
 )
 
 if (-Not ((Test-Path "triplets/$Triplet.cmake") -or (Test-Path "triplets/community/$Triplet.cmake"))) {
@@ -81,27 +76,26 @@ $commonArgs = @(
     "--x-packages-root=$packagesRoot",
     "--overlay-ports=scripts/test_ports"
 )
-$cachingArgs = @()
 
-$skipFailuresArg = @()
+$skipFailures = $false
 if ([string]::IsNullOrWhiteSpace($BinarySourceStub)) {
-    $cachingArgs = @('--no-binarycaching')
+    $commonArgs += @('--no-binarycaching')
 } else {
-    $cachingArgs = @('--binarycaching')
+    $commonArgs += @('--binarycaching')
     $binaryCachingMode = 'readwrite'
     if ([string]::IsNullOrWhiteSpace($BuildReason)) {
         Write-Host 'Build reason not specified, defaulting to using binary caching in read write mode.'
     }
     elseif ($BuildReason -eq 'PullRequest') {
         Write-Host 'Build reason was Pull Request, using binary caching in read write mode, skipping failures.'
-        $skipFailuresArg = @('--skip-failures')
+        $skipFailures = $true
     }
     else {
         Write-Host "Build reason was $BuildReason, using binary caching in write only mode."
         $binaryCachingMode = 'write'
     }
 
-    $cachingArgs += @("--binarysource=clear;$BinarySourceStub,$binaryCachingMode")
+    $commonArgs += @("--binarysource=clear;$BinarySourceStub,$binaryCachingMode")
 }
 
 if ($Triplet -eq 'x64-linux') {
@@ -115,17 +109,11 @@ else {
     $executableExtension = '.exe'
 }
 
-$failureLogs = Join-Path $ArtifactStagingDirectory 'failure-logs'
-$xunitFile = Join-Path $ArtifactStagingDirectory "$Triplet-results.xml"
+$xmlResults = Join-Path $ArtifactStagingDirectory 'xml-results'
+mkdir $xmlResults
+$xmlFile = Join-Path $xmlResults "$Triplet.xml"
 
-if ($IsWindows)
-{
-    mkdir empty
-    cmd /c "robocopy.exe empty `"$buildtreesRoot`" /MIR /NFL /NDL /NC /NP > nul"
-    cmd /c "robocopy.exe empty `"$packagesRoot`" /MIR /NFL /NDL /NC /NP > nul"
-    cmd /c "robocopy.exe empty `"$installRoot`" /MIR /NFL /NDL /NC /NP > nul"
-    rmdir empty
-}
+$failureLogs = Join-Path $ArtifactStagingDirectory 'failure-logs'
 
 & "./vcpkg$executableExtension" x-ci-clean @commonArgs
 if ($LASTEXITCODE -ne 0)
@@ -133,44 +121,28 @@ if ($LASTEXITCODE -ne 0)
     throw "vcpkg clean failed"
 }
 
-$parentHashes = @()
-if (($BuildReason -eq 'PullRequest') -and -not $NoParentHashes)
+$skipList = . "$PSScriptRoot/generate-skip-list.ps1" `
+    -Triplet $Triplet `
+    -BaselineFile "$PSScriptRoot/../ci.baseline.txt" `
+    -SkipFailures:$skipFailures
+
+if ($Triplet -in @('x64-windows', 'x64-osx', 'x64-linux'))
 {
-    # Prefetch tools for better output
-    foreach ($tool in @('cmake', 'ninja', 'git')) {
-        & "./vcpkg$executableExtension" fetch $tool
-        if ($LASTEXITCODE -ne 0)
-        {
-            throw "Failed to fetch $tool"
-        }
-    }
-
-    Write-Host "Determining parent hashes using HEAD~1"
-    $parentHashesFile = Join-Path $ArtifactStagingDirectory 'parent-hashes.json'
-    $parentHashes = @("--parent-hashes=$parentHashesFile")
-    & git revert -n -m 1 HEAD | Out-Null
-    # The vcpkg.cmake toolchain file is not part of ABI hashing,
-    # but changes must trigger at least some testing.
-    Copy-Item "scripts/buildsystems/vcpkg.cmake" -Destination "scripts/test_ports/cmake"
-    Copy-Item "scripts/buildsystems/vcpkg.cmake" -Destination "scripts/test_ports/cmake-user"
-    & "./vcpkg$executableExtension" ci "--triplet=$Triplet" --dry-run "--ci-baseline=$PSScriptRoot/../ci.baseline.txt" @commonArgs --no-binarycaching "--output-hashes=$parentHashesFile"
-
-    Write-Host "Running CI using parent hashes"
-    & git reset --hard HEAD
+    # WORKAROUND: These triplets are native-targetting which triggers an issue in how vcpkg handles the skip list.
+    # The workaround is to pass the skip list as host-excludes as well.
+    & "./vcpkg$executableExtension" ci $Triplet --x-xunit=$xmlFile --exclude=$skipList --host-exclude=$skipList --failure-logs=$failureLogs @commonArgs
 }
-
-# The vcpkg.cmake toolchain file is not part of ABI hashing,
-# but changes must trigger at least some testing.
-Copy-Item "scripts/buildsystems/vcpkg.cmake" -Destination "scripts/test_ports/cmake"
-Copy-Item "scripts/buildsystems/vcpkg.cmake" -Destination "scripts/test_ports/cmake-user"
-& "./vcpkg$executableExtension" ci "--triplet=$Triplet" --failure-logs=$failureLogs --x-xunit=$xunitFile "--ci-baseline=$PSScriptRoot/../ci.baseline.txt" @commonArgs @cachingArgs @parentHashes @skipFailuresArg
-
-$failureLogsEmpty = (-Not (Test-Path $failureLogs) -Or ((Get-ChildItem $failureLogs).count -eq 0))
-Write-Host "##vso[task.setvariable variable=FAILURE_LOGS_EMPTY]$failureLogsEmpty"
+else
+{
+    & "./vcpkg$executableExtension" ci $Triplet --x-xunit=$xmlFile --exclude=$skipList --failure-logs=$failureLogs @commonArgs
+}
 
 if ($LASTEXITCODE -ne 0)
 {
     throw "vcpkg ci failed"
 }
 
-Write-Host "##vso[task.setvariable variable=XML_RESULTS_FILE]$xunitFile"
+& "$PSScriptRoot/analyze-test-results.ps1" -logDir $xmlResults `
+    -triplet $Triplet `
+    -baselineFile .\scripts\ci.baseline.txt `
+    -passingIsPassing:$PassingIsPassing

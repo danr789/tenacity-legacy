@@ -1,3 +1,5 @@
+vcpkg_fail_port_install(ON_TARGET "UWP")
+
 # Enable static build in UNIX
 if (VCPKG_TARGET_IS_WINDOWS)
     vcpkg_check_linkage(ONLY_DYNAMIC_LIBRARY)
@@ -23,20 +25,19 @@ vcpkg_extract_source_archive_ex(
         fix-undefined-typeid.patch
 )
 
-vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}"
+vcpkg_configure_cmake(
+    SOURCE_PATH ${SOURCE_PATH}
+    PREFER_NINJA
     OPTIONS ${FEATURE_OPTIONS}
 )
 
-vcpkg_cmake_install()
-vcpkg_cmake_config_fixup(CONFIG_PATH share/libmodman)
+vcpkg_install_cmake()
+vcpkg_fixup_cmake_targets(CONFIG_PATH share/libmodman)
 vcpkg_copy_pdbs()
 
-file(COPY "${CMAKE_CURRENT_LIST_DIR}/vcpkg-cmake-wrapper.cmake"
-          "${CMAKE_CURRENT_LIST_DIR}/usage"
-          DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
-file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include" "${CURRENT_PACKAGES_DIR}/debug/share")
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/vcpkg-cmake-wrapper.cmake
+          ${CMAKE_CURRENT_LIST_DIR}/usage
+          DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT})
+file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include ${CURRENT_PACKAGES_DIR}/debug/share)
 
-vcpkg_fixup_pkgconfig()
-
-file(INSTALL "${SOURCE_PATH}/COPYING" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)
+file(INSTALL ${SOURCE_PATH}/COPYING DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)

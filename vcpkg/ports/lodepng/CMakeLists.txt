@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.8.0)
 project(lodepng)
 
-add_library(lodepng lodepng.cpp)
+add_library(lodepng  lodepng.cpp lodepng_util.cpp)
 target_include_directories(lodepng PUBLIC
-  $<INSTALL_INTERFACE:include>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
 file(WRITE "${CMAKE_BINARY_DIR}/lodepng-config.cmake" "include(\"\${CMAKE_CURRENT_LIST_DIR}/lodepng-targets.cmake\")")
@@ -13,18 +13,10 @@ install(TARGETS lodepng EXPORT lodepng-targets)
 
 install(EXPORT lodepng-targets DESTINATION share/lodepng/)
 
-add_library(lodepng-c lodepng.c)
-target_include_directories(lodepng-c PUBLIC
-  $<INSTALL_INTERFACE:include>
-)
-
-file(WRITE "${CMAKE_BINARY_DIR}/lodepng-c-config.cmake" "include(\"\${CMAKE_CURRENT_LIST_DIR}/lodepng-c-targets.cmake\")")
-install(FILES "${CMAKE_BINARY_DIR}/lodepng-c-config.cmake" DESTINATION "share/lodepng-c/")
-
-install(TARGETS lodepng-c EXPORT lodepng-c-targets)
-
-install(EXPORT lodepng-c-targets DESTINATION share/lodepng-c/)
+if(NOT DDISABLE_INSTALL_EXAMPLES)
+  install(DIRECTORY examples  DESTINATION share/lodepng/)
+endif()
 
 if(NOT DISABLE_INSTALL_HEADERS)
-  install(FILES lodepng.h DESTINATION include)
+  install(FILES lodepng.h lodepng_util.h  DESTINATION include)
 endif()

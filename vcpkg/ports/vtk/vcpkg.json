@@ -1,10 +1,9 @@
 {
   "name": "vtk",
   "version-semver": "9.0.3-pv5.9.1",
-  "port-version": 10,
+  "port-version": 2,
   "description": "Software system for 3D computer graphics, image processing, and visualization",
   "homepage": "https://github.com/Kitware/VTK",
-  "license": "BSD-3-Clause",
   "dependencies": [
     "double-conversion",
     "eigen3",
@@ -31,7 +30,7 @@
     "lz4",
     "netcdf-c",
     "pegtl-2",
-    "proj",
+    "proj4",
     "pugixml",
     "sqlite3",
     "tiff",
@@ -51,13 +50,12 @@
       "description": "Build all vtk modules",
       "dependencies": [
         "ffmpeg",
+        "gdal",
         "libmysql",
         {
           "name": "vtk",
           "default-features": false,
           "features": [
-            "gdal",
-            "geojson",
             "mpi",
             "python",
             "qt"
@@ -88,22 +86,6 @@
       "dependencies": [
         "cuda"
       ]
-    },
-    "gdal": {
-      "description": "Support GDAL compilation",
-      "dependencies": [
-        "gdal",
-        {
-          "name": "vtk",
-          "default-features": false,
-          "features": [
-            "mpi"
-          ]
-        }
-      ]
-    },
-    "geojson": {
-      "description": "Convert Geo JSON format to vtkPolyData"
     },
     "mpi": {
       "description": "MPI functionality for VTK",

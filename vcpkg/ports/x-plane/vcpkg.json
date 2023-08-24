@@ -1,7 +1,6 @@
 {
   "name": "x-plane",
-  "version": "3.0.3",
-  "port-version": 1,
+  "version-string": "3.0.3",
   "description": "The X-Plane Plugin SDK",
   "homepage": "https://developer.x-plane.com/sdk/",
   "supports": "!(x86 | arm | wasm32)"

@@ -134,5 +134,3 @@ file(INSTALL ${SOURCE_PATH}/LICENSE
      DESTINATION ${CURRENT_PACKAGES_DIR}/share/bde
      RENAME copyright
 )
-
-vcpkg_fixup_pkgconfig()

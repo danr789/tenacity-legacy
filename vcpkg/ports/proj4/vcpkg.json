@@ -1,29 +1,36 @@
 {
   "name": "proj4",
-  "version-semver": "8.9.9",
-  "port-version": 1,
-  "description": "A stub package that pulls in proj. Do not depend on this package.",
-  "license": "MIT",
+  "version-semver": "7.2.1",
+  "port-version": 5,
+  "description": "PROJ.4 library for cartographic projections",
+  "homepage": "https://github.com/OSGeo/PROJ",
   "dependencies": [
     {
-      "name": "proj",
-      "default-features": false,
-      "version>=": "9.0.0"
+      "name": "sqlite3",
+      "default-features": false
+    },
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake-config",
+      "host": true
     }
   ],
   "default-features": [
-    "net",
+    "database",
     "tiff"
   ],
   "features": {
-    "net": {
-      "description": "Enable network support",
+    "database": {
+      "description": "generate database",
       "dependencies": [
         {
-          "name": "proj",
-          "default-features": false,
+          "name": "sqlite3",
+          "host": true,
           "features": [
-            "net"
+            "tool"
           ]
         }
       ]
@@ -31,25 +38,13 @@
     "tiff": {
       "description": "Enable TIFF support to read some grids",
       "dependencies": [
-        {
-          "name": "proj",
-          "default-features": false,
-          "features": [
-            "tiff"
-          ]
-        }
+        "tiff"
       ]
     },
     "tools": {
-      "description": "Build tools",
+      "description": "generate tools",
       "dependencies": [
-        {
-          "name": "proj",
-          "default-features": false,
-          "features": [
-            "tools"
-          ]
-        }
+        "curl"
       ]
     }
   }

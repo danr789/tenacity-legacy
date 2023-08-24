@@ -8,8 +8,6 @@ vcpkg_from_github(
     HEAD_REF master
     PATCHES
         fix-external-dependencies.patch
-        fix-external-dependencies2.patch
-        eigen-3.4.patch
 )
 
 file(REMOVE ${SOURCE_PATH}/cmake/FindSuiteSparse.cmake)
@@ -17,8 +15,9 @@ file(REMOVE ${SOURCE_PATH}/cmake/FindGflags.cmake)
 file(REMOVE ${SOURCE_PATH}/cmake/FindGlog.cmake)
 file(REMOVE ${SOURCE_PATH}/cmake/FindEigen.cmake)
 
-vcpkg_cmake_configure(
+vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}
+    PREFER_NINJA
     OPTIONS
         -DCMAKE_CXX_STANDARD=14
         -DCMAKE_CXX_EXTENSIONS=OFF
@@ -28,8 +27,8 @@ vcpkg_cmake_configure(
         -DTHEIA_USE_EXTERNAL_FLANN=ON
 )
 
-vcpkg_cmake_install()
-vcpkg_cmake_config_fixup()
+vcpkg_install_cmake()
+vcpkg_fixup_cmake_targets()
 vcpkg_copy_pdbs()
 
 # Clean
